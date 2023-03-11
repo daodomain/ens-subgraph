@@ -55,7 +55,6 @@ dataSources:
         - Textchanged
         - ContenthashChanged
         - InterfaceChanged
-        - AuthorisationChanged
       abis:
         - name: Resolver
           file: ./abis/PublicResolver.json
@@ -66,10 +65,6 @@ dataSources:
           handler: handleAddrChanged
         - event: "AddressChanged(indexed bytes32,uint256,bytes)"
           handler: handleMulticoinAddrChanged
-        - event: >-
-            AuthorisationChanged(indexed bytes32,indexed address,indexed
-            address,bool)
-          handler: handleAuthorisationChanged
         - event: "ContenthashChanged(indexed bytes32,bytes)"
           handler: handleContentHashChanged
         - event: "InterfaceChanged(indexed bytes32,indexed bytes4,address)"
@@ -80,10 +75,6 @@ dataSources:
           handler: handlePubkeyChanged
         - event: "TextChanged(indexed bytes32,indexed string,string)"
           handler: handleTextChanged
-        - event: "TextChanged(indexed bytes32,indexed string,string,string)"
-          handler: handleTextChangedWithValue
-        - event: "VersionChanged(indexed bytes32,uint64)"
-          handler: handleVersionChanged
   - kind: ethereum/contract
     name: BaseRegistrar
     network: sepolia
@@ -131,7 +122,7 @@ dataSources:
       eventHandlers:
         - event: >-
             NameRegistered(string,indexed bytes32,indexed
-            address,uint256,uint256,uint256)
+            address,uint256,uint256)
           handler: handleNameRegisteredByController
         - event: "NameRenewed(string,indexed bytes32,uint256,uint256)"
           handler: handleNameRenewedByController
@@ -153,14 +144,10 @@ dataSources:
         - name: NameWrapper
           file: ./abis/NameWrapper.json
       eventHandlers:
-        - event: "NameWrapped(indexed bytes32,bytes,address,uint32,uint64)"
+        - event: "NameWrapped(indexed bytes32,bytes,address,uint96)"
           handler: handleNameWrapped
         - event: "NameUnwrapped(indexed bytes32,address)"
           handler: handleNameUnwrapped
-        - event: "FusesSet(indexed bytes32,uint32)"
-          handler: handleFusesSet
-        - event: "ExpiryExtended(indexed bytes32,uint64)"
-          handler: handleExpiryExtended
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
         - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])

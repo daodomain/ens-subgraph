@@ -7,7 +7,7 @@
         "type": "address"
       },
       {
-        "internalType": "contract IPriceOracle",
+        "internalType": "contract PriceOracle",
         "name": "_prices",
         "type": "address"
       },
@@ -20,95 +20,10 @@
         "internalType": "uint256",
         "name": "_maxCommitmentAge",
         "type": "uint256"
-      },
-      {
-        "internalType": "contract ReverseRegistrar",
-        "name": "_reverseRegistrar",
-        "type": "address"
-      },
-      {
-        "internalType": "contract INameWrapper",
-        "name": "_nameWrapper",
-        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "commitment",
-        "type": "bytes32"
-      }
-    ],
-    "name": "CommitmentTooNew",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "commitment",
-        "type": "bytes32"
-      }
-    ],
-    "name": "CommitmentTooOld",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "duration",
-        "type": "uint256"
-      }
-    ],
-    "name": "DurationTooShort",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InsufficientValue",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "MaxCommitmentAgeTooHigh",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "MaxCommitmentAgeTooLow",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      }
-    ],
-    "name": "NameNotAvailable",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ResolverRequiredWhenDataSupplied",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "commitment",
-        "type": "bytes32"
-      }
-    ],
-    "name": "UnexpiredCommitmentExists",
-    "type": "error"
   },
   {
     "anonymous": false,
@@ -134,13 +49,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "baseCost",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "premium",
+        "name": "cost",
         "type": "uint256"
       },
       {
@@ -182,6 +91,19 @@
       }
     ],
     "name": "NameRenewed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      }
+    ],
+    "name": "NewPriceOracle",
     "type": "event"
   },
   {
@@ -280,9 +202,33 @@
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "duration",
-        "type": "uint256"
+        "internalType": "bytes32",
+        "name": "secret",
+        "type": "bytes32"
+      }
+    ],
+    "name": "makeCommitment",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
       },
       {
         "internalType": "bytes32",
@@ -295,22 +241,12 @@
         "type": "address"
       },
       {
-        "internalType": "bytes[]",
-        "name": "data",
-        "type": "bytes[]"
-      },
-      {
-        "internalType": "bool",
-        "name": "reverseRecord",
-        "type": "bool"
-      },
-      {
-        "internalType": "uint16",
-        "name": "ownerControlledFuses",
-        "type": "uint16"
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
       }
     ],
-    "name": "makeCommitment",
+    "name": "makeCommitmentWithConfig",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -349,19 +285,6 @@
   },
   {
     "inputs": [],
-    "name": "nameWrapper",
-    "outputs": [
-      {
-        "internalType": "contract INameWrapper",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -374,39 +297,31 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "prices",
-    "outputs": [
-      {
-        "internalType": "contract IPriceOracle",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
       },
       {
         "internalType": "address",
-        "name": "_to",
+        "name": "owner",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "_amount",
+        "name": "duration",
         "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "secret",
+        "type": "bytes32"
       }
     ],
-    "name": "recoverFunds",
+    "name": "register",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -437,22 +352,12 @@
         "type": "address"
       },
       {
-        "internalType": "bytes[]",
-        "name": "data",
-        "type": "bytes[]"
-      },
-      {
-        "internalType": "bool",
-        "name": "reverseRecord",
-        "type": "bool"
-      },
-      {
-        "internalType": "uint16",
-        "name": "ownerControlledFuses",
-        "type": "uint16"
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
       }
     ],
-    "name": "register",
+    "name": "registerWithConfig",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -498,37 +403,43 @@
     "name": "rentPrice",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "base",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "premium",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct IPriceOracle.Price",
-        "name": "price",
-        "type": "tuple"
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "reverseRegistrar",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "contract ReverseRegistrar",
-        "name": "",
+        "internalType": "uint256",
+        "name": "_minCommitmentAge",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxCommitmentAge",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCommitmentAges",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract PriceOracle",
+        "name": "_prices",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
+    "name": "setPriceOracle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

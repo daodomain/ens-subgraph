@@ -7,7 +7,7 @@
         "type": "address"
       },
       {
-        "internalType": "contract IBaseRegistrar",
+        "internalType": "contract BaseRegistrar",
         "name": "_registrar",
         "type": "address"
       },
@@ -19,96 +19,6 @@
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "CannotUpgrade",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "IncompatibleParent",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      }
-    ],
-    "name": "IncorrectTargetOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "IncorrectTokenType",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "labelHash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expectedLabelhash",
-        "type": "bytes32"
-      }
-    ],
-    "name": "LabelMismatch",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "label",
-        "type": "string"
-      }
-    ],
-    "name": "LabelTooLong",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "LabelTooShort",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NameIsNotWrapped",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "node",
-        "type": "bytes32"
-      }
-    ],
-    "name": "OperationProhibited",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "node",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
-      }
-    ],
-    "name": "Unauthorised",
-    "type": "error"
   },
   {
     "anonymous": false,
@@ -165,31 +75,12 @@
       },
       {
         "indexed": false,
-        "internalType": "uint64",
-        "name": "expiry",
-        "type": "uint64"
-      }
-    ],
-    "name": "ExpiryExtended",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "node",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint32",
+        "internalType": "uint96",
         "name": "fuses",
-        "type": "uint32"
+        "type": "uint96"
       }
     ],
-    "name": "FusesSet",
+    "name": "FusesBurned",
     "type": "event"
   },
   {
@@ -234,15 +125,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint32",
+        "internalType": "uint96",
         "name": "fuses",
-        "type": "uint32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "expiry",
-        "type": "uint64"
+        "type": "uint96"
       }
     ],
     "name": "NameWrapped",
@@ -387,9 +272,9 @@
         "type": "bytes32"
       },
       {
-        "internalType": "uint32",
+        "internalType": "uint96",
         "name": "fuseMask",
-        "type": "uint32"
+        "type": "uint96"
       }
     ],
     "name": "allFusesBurned",
@@ -459,20 +344,14 @@
         "type": "bytes32"
       },
       {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
+        "internalType": "uint96",
+        "name": "_fuses",
+        "type": "uint96"
       }
     ],
-    "name": "canModifyName",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "burnFuses",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -510,37 +389,8 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "parentNode",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "labelhash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint64",
-        "name": "expiry",
-        "type": "uint64"
-      }
-    ],
-    "name": "extendExpiry",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
-        "name": "id",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
@@ -552,14 +402,38 @@
         "type": "address"
       },
       {
-        "internalType": "uint32",
+        "internalType": "uint96",
         "name": "fuses",
-        "type": "uint32"
+        "type": "uint96"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getFuses",
+    "outputs": [
+      {
+        "internalType": "uint96",
+        "name": "fuses",
+        "type": "uint96"
       },
       {
-        "internalType": "uint64",
-        "name": "expiry",
-        "type": "uint64"
+        "internalType": "enum INameWrapper.NameSafety",
+        "name": "vulnerability",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "vulnerableNode",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",
@@ -595,9 +469,14 @@
         "internalType": "bytes32",
         "name": "node",
         "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
       }
     ],
-    "name": "isWrapped",
+    "name": "isTokenOwnerOrApproved",
     "outputs": [
       {
         "internalType": "bool",
@@ -616,19 +495,6 @@
         "internalType": "contract IMetadataService",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "name",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -712,34 +578,11 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "owner",
+        "name": "",
         "type": "address"
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "recoverFunds",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -765,16 +608,16 @@
         "type": "address"
       },
       {
-        "internalType": "uint16",
-        "name": "ownerControlledFuses",
-        "type": "uint16"
+        "internalType": "uint96",
+        "name": "_fuses",
+        "type": "uint96"
       }
     ],
     "name": "registerAndWrapETH2LD",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "registrarExpiry",
+        "name": "expires",
         "type": "uint256"
       }
     ],
@@ -786,7 +629,7 @@
     "name": "registrar",
     "outputs": [
       {
-        "internalType": "contract IBaseRegistrar",
+        "internalType": "contract BaseRegistrar",
         "name": "",
         "type": "address"
       }
@@ -912,34 +755,6 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "parentNode",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "labelhash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint32",
-        "name": "fuses",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint64",
-        "name": "expiry",
-        "type": "uint64"
-      }
-    ],
-    "name": "setChildFuses",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "controller",
         "type": "address"
@@ -958,32 +773,8 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "node",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint16",
-        "name": "ownerControlledFuses",
-        "type": "uint16"
-      }
-    ],
-    "name": "setFuses",
-    "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "contract IMetadataService",
-        "name": "_metadataService",
+        "name": "_newMetadataService",
         "type": "address"
       }
     ],
@@ -1046,31 +837,21 @@
         "type": "bytes32"
       },
       {
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "label",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "internalType": "address",
         "name": "owner",
         "type": "address"
-      },
-      {
-        "internalType": "uint32",
-        "name": "fuses",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint64",
-        "name": "expiry",
-        "type": "uint64"
       }
     ],
     "name": "setSubnodeOwner",
     "outputs": [
       {
         "internalType": "bytes32",
-        "name": "node",
+        "name": "",
         "type": "bytes32"
       }
     ],
@@ -1091,7 +872,74 @@
       },
       {
         "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint96",
+        "name": "_fuses",
+        "type": "uint96"
+      }
+    ],
+    "name": "setSubnodeOwnerAndWrap",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "parentNode",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "label",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
         "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "resolver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "ttl",
+        "type": "uint64"
+      }
+    ],
+    "name": "setSubnodeRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "parentNode",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "newOwner",
         "type": "address"
       },
       {
@@ -1105,24 +953,13 @@
         "type": "uint64"
       },
       {
-        "internalType": "uint32",
-        "name": "fuses",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint64",
-        "name": "expiry",
-        "type": "uint64"
+        "internalType": "uint96",
+        "name": "_fuses",
+        "type": "uint96"
       }
     ],
-    "name": "setSubnodeRecord",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "node",
-        "type": "bytes32"
-      }
-    ],
+    "name": "setSubnodeRecordAndWrap",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -1140,19 +977,6 @@
       }
     ],
     "name": "setTTL",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract INameWrapperUpgrade",
-        "name": "_upgradeAddress",
-        "type": "address"
-      }
-    ],
-    "name": "setUpgradeContract",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1198,12 +1022,12 @@
       },
       {
         "internalType": "bytes32",
-        "name": "labelhash",
+        "name": "label",
         "type": "bytes32"
       },
       {
         "internalType": "address",
-        "name": "controller",
+        "name": "newController",
         "type": "address"
       }
     ],
@@ -1216,85 +1040,21 @@
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "labelhash",
+        "name": "label",
         "type": "bytes32"
       },
       {
         "internalType": "address",
-        "name": "registrant",
+        "name": "newRegistrant",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "controller",
+        "name": "newController",
         "type": "address"
       }
     ],
     "name": "unwrapETH2LD",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "parentNode",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "label",
-        "type": "string"
-      },
-      {
-        "internalType": "address",
-        "name": "wrappedOwner",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "resolver",
-        "type": "address"
-      }
-    ],
-    "name": "upgrade",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "upgradeContract",
-    "outputs": [
-      {
-        "internalType": "contract INameWrapperUpgrade",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "label",
-        "type": "string"
-      },
-      {
-        "internalType": "address",
-        "name": "wrappedOwner",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "resolver",
-        "type": "address"
-      }
-    ],
-    "name": "upgradeETH2LD",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1331,6 +1091,11 @@
         "type": "address"
       },
       {
+        "internalType": "uint96",
+        "name": "_fuses",
+        "type": "uint96"
+      },
+      {
         "internalType": "address",
         "name": "resolver",
         "type": "address"
@@ -1354,9 +1119,9 @@
         "type": "address"
       },
       {
-        "internalType": "uint16",
-        "name": "ownerControlledFuses",
-        "type": "uint16"
+        "internalType": "uint96",
+        "name": "_fuses",
+        "type": "uint96"
       },
       {
         "internalType": "address",

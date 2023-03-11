@@ -16,8 +16,6 @@ import {
   Transfer as TransferEvent,
 } from "./types/BaseRegistrar/BaseRegistrar";
 
-import { NameRegistered as ControllerNameRegisteredEventOld } from "./types/EthRegistrarControllerOld/EthRegistrarControllerOld";
-
 import {
   NameRegistered as ControllerNameRegisteredEvent,
   NameRenewed as ControllerNameRenewedEvent,
@@ -50,7 +48,8 @@ export function handleNameRegistered(event: NameRegisteredEvent): void {
   registration.expiryDate = event.params.expires;
   registration.registrant = account.id;
 
-  let labelName = ens.nameByHash(label.toHexString());
+  // let labelName = ens.nameByHash(label.toHexString());
+  let labelName = label.toHexString();
   if (labelName != null) {
     domain.labelName = labelName;
     domain.name = labelName + ".eth";
@@ -68,19 +67,13 @@ export function handleNameRegistered(event: NameRegisteredEvent): void {
   registrationEvent.save();
 }
 
-export function handleNameRegisteredByControllerOld(
-  event: ControllerNameRegisteredEventOld
-): void {
-  setNamePreimage(event.params.name, event.params.label, event.params.cost);
-}
-
 export function handleNameRegisteredByController(
   event: ControllerNameRegisteredEvent
 ): void {
   setNamePreimage(
     event.params.name,
     event.params.label,
-    event.params.baseCost.plus(event.params.premium)
+    event.params.cost
   );
 }
 

@@ -4,14 +4,11 @@ import {
   ABIChanged as ABIChangedEvent,
   AddrChanged as AddrChangedEvent,
   AddressChanged as AddressChangedEvent,
-  AuthorisationChanged as AuthorisationChangedEvent,
   ContenthashChanged as ContenthashChangedEvent,
   InterfaceChanged as InterfaceChangedEvent,
   NameChanged as NameChangedEvent,
   PubkeyChanged as PubkeyChangedEvent,
   TextChanged as TextChangedEvent,
-  TextChanged1 as TextChangedWithValueEvent,
-  VersionChanged as VersionChangedEvent,
 } from "./types/Resolver/Resolver";
 
 import {
@@ -135,33 +132,6 @@ export function handleTextChanged(event: TextChangedEvent): void {
   resolverEvent.save();
 }
 
-export function handleTextChangedWithValue(
-  event: TextChangedWithValueEvent
-): void {
-  let resolver = getOrCreateResolver(event.params.node, event.address);
-
-  let key = event.params.key;
-  if (resolver.texts == null) {
-    resolver.texts = [key];
-    resolver.save();
-  } else {
-    let texts = resolver.texts!;
-    if (!texts.includes(key)) {
-      texts.push(key);
-      resolver.texts = texts;
-      resolver.save();
-    }
-  }
-
-  let resolverEvent = new TextChanged(createEventID(event));
-  resolverEvent.resolver = createResolverID(event.params.node, event.address);
-  resolverEvent.blockNumber = event.block.number.toI32();
-  resolverEvent.transactionID = event.transaction.hash;
-  resolverEvent.key = event.params.key;
-  resolverEvent.value = event.params.value;
-  resolverEvent.save();
-}
-
 export function handleContentHashChanged(event: ContenthashChangedEvent): void {
   let resolver = getOrCreateResolver(event.params.node, event.address);
   resolver.contentHash = event.params.hash;
@@ -183,41 +153,6 @@ export function handleInterfaceChanged(event: InterfaceChangedEvent): void {
   resolverEvent.interfaceID = event.params.interfaceID;
   resolverEvent.implementer = event.params.implementer;
   resolverEvent.save();
-}
-
-export function handleAuthorisationChanged(
-  event: AuthorisationChangedEvent
-): void {
-  let resolverEvent = new AuthorisationChanged(createEventID(event));
-  resolverEvent.blockNumber = event.block.number.toI32();
-  resolverEvent.transactionID = event.transaction.hash;
-  resolverEvent.resolver = createResolverID(event.params.node, event.address);
-  resolverEvent.owner = event.params.owner;
-  resolverEvent.target = event.params.target;
-  resolverEvent.isAuthorized = event.params.isAuthorised;
-  resolverEvent.save();
-}
-
-export function handleVersionChanged(event: VersionChangedEvent): void {
-  let resolverEvent = new VersionChanged(createEventID(event));
-  resolverEvent.blockNumber = event.block.number.toI32();
-  resolverEvent.transactionID = event.transaction.hash;
-  resolverEvent.resolver = createResolverID(event.params.node, event.address);
-  resolverEvent.version = event.params.newVersion;
-  resolverEvent.save();
-
-  let domain = Domain.load(event.params.node.toHexString());
-  if (domain && domain.resolver === resolverEvent.resolver) {
-    domain.resolvedAddress = null;
-    domain.save();
-  }
-
-  let resolver = getOrCreateResolver(event.params.node, event.address);
-  resolver.addr = null;
-  resolver.contentHash = null;
-  resolver.texts = null;
-  resolver.coinTypes = null;
-  resolver.save();
 }
 
 function getOrCreateResolver(node: Bytes, address: Address): Resolver {
