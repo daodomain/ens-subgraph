@@ -32,7 +32,7 @@ import {
 } from "./types/schema";
 
 var rootNode: ByteArray = byteArrayFromHex(
-  "93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae"
+  "b5f2bbf81da581299d4ff7af60560c0ac854196f5227328d2d0c2bb0df33e553"
 );
 
 export function handleNameRegistered(event: NameRegisteredEvent): void {
@@ -52,7 +52,7 @@ export function handleNameRegistered(event: NameRegisteredEvent): void {
   let labelName = label.toHexString();
   if (labelName != null) {
     domain.labelName = labelName;
-    domain.name = labelName + ".eth";
+    domain.name = labelName + ".dao";
     registration.labelName = labelName;
   }
   domain.save();
@@ -91,7 +91,7 @@ function setNamePreimage(name: string, label: Bytes, cost: BigInt): void {
   let domain = Domain.load(crypto.keccak256(concat(rootNode, label)).toHex())!;
   if (domain.labelName !== name) {
     domain.labelName = name;
-    domain.name = name + ".eth";
+    domain.name = name + ".dao";
     domain.save();
   }
 
